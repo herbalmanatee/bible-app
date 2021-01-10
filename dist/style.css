@@ -1,0 +1,13 @@
+body {
+  background-color: rgb(44, 80, 177);
+  color: whitesmoke;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(7, 10%);
+}
+
+.grid-item {
+  margin: 10px;
+}

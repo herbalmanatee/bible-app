@@ -10,39 +10,47 @@ class VersionsForm extends React.Component {
 
     this.state = {
       bibles: exampleData.bibles["bibles"],
+      version: null,
       books: exampleData.books["data"],
-      chapters: [1,2,3]
+      chapters: null
     }
   }
 
-  // componentDidMount() {
-  //   //get bible versions list from biblia api
-  //   $.get({
-  //     url: '/bibleForm',
-  //     error: (err) => {
-  //       console.log(err)
-  //     },
-  //     success: (data) => {
-  //       this.setState({
-  //         bibles: data[0],
-  //         books: data[1]
-  //       });
-  //       console.log(data);
-  //     }
-  //   })
+  componentDidMount() {
+    //get bible versions list from biblia api
+    $.get({
+      url: '/bibleForm',
+      error: (err) => {
+        console.log(err)
+      },
+      success: (data) => {
+        this.setState({
+          bibles: data[0],
+          books: data[1],
+        });
+      }
+    })
 
-  //   //get bible books list from api.bible
+    //get bible books list from api.bible
 
-  // }
+  }
 
   onVersionSubmit (event) {
     event.preventDefault();
+    //let books
     let versionValue = document.getElementById('versions').value
     let bookValue = document.getElementById('books').value
-    let versionAbbrv = this.getAbbrv(this.state.bibles, versionValue, 'title', 'abbreviatedTitle');
+    let versionAbbrv = this.getAbbrv(this.state.bibles, versionValue, 'title', 'bible');
     let bookAbbrv = this.getAbbrv(this.state.books, bookValue, 'name', 'id');
     console.log(versionAbbrv, bookAbbrv);
-
+    for (let bookObj of this.state.books) {
+      if (bookObj['id'] === bookAbbrv) {
+        console.log('match')
+        this.setState({
+          chapters: bookObj
+        })
+      }
+    }
   }
 
   //returns abbrv value for book name or version name
@@ -55,12 +63,15 @@ class VersionsForm extends React.Component {
   }
 
   render() {
+    //conditional rendering for chapters grid
     let chapterSelect;
-    if (this.state.chapters.length > 0) {
-      chapterSelect = <ChapterSelect />
+    if (this.state.chapters) {
+      console.log('render');
+      chapterSelect = <ChapterSelect name={this.state.chapters["name"]}chapters={this.state.chapters["chapters"]}/>
     } else {
       chapterSelect = <div></div>
     }
+
     return (
       <div>
       <form id="form" onSubmit={()=>{this.onVersionSubmit(event)}}>
