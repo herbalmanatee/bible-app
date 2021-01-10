@@ -1,17 +1,16 @@
 const express = require('express');
 const db = require('../db');
-const { JSDOM } = require( "jsdom" );
-const { window } = new JSDOM( "" );
-const $ = require( "jquery" )( window );
+// const { JSDOM } = require( "jsdom" );
+// const { window } = new JSDOM( "" );
+// const $ = require( "jquery" )( window );
 const app = express();
 const port = process.env.PORT || 8080;
-const API_KEY = require('../api.js');
+// const API_KEY = require('../api.js');
 const apiRequests = require('./apiRequests');
-// console.log(process.env.;
+// // console.log(process.env.;
 app.use(express.static('dist'));
 app.listen(port, ()=> {
   console.log(`listening on ${port}`);
-  console.log(API_KEY.bibliaKey);
 });
 
 app.get('/', (req, res) => {
