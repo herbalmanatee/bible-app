@@ -1,18 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 let ChapterText = (props) => {
   return (
-  <div dangerouslySetInnerHTML={{__html: props.text}}>
+  <div id="text" dangerouslySetInnerHTML={{__html: props.text}}>
   </div>
   )
 }
 
 export default ChapterText;
-// {/*
-//     <p>
-//   <span lang="en-US">John 3</span> (LEB)
-// </p>
-// <p style={{"fontweight": "bold","fontfamily": "Arial","fontsize": "10pt","margintop": "12pt"}} lang="en-US">
-//   A Meeting with Nicodemus
-// </p> */}
+
+// BIBLIA_KEY = 7edbae6fd20d3652d82df675832f0464
+// APIBIBLE_KEY = e0ad6ace7e5d51147b7b937b37473399

@@ -2,10 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 8080;
-
-// const API_KEY = require('../api.js');
 const apiRequests = require('./apiRequests');
-// // console.log(process.env.;
+
 
 app.use(express.static('dist'));
 app.use(bodyParser.json());

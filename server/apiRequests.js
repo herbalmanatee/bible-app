@@ -1,13 +1,12 @@
 const { JSDOM } = require('jsdom');
 const { window } = new JSDOM( "" );
 const $ = require('jquery')( window );
-const API_KEY = require('../api.js');
-
+require('dotenv').config();
 //functions that perform apiRequests
 
 let getBibleVerisonsData = (cb) => {
   $.get({
-    url: `https://api.biblia.com/v1/bible/find?key=${API_KEY.bibliaKey}`,
+    url: `https://api.biblia.com/v1/bible/find?key=${process.env.BIBLIA_KEY}`,
     error: (err) => {
       cb(err);
     },
@@ -28,7 +27,7 @@ let getBibleVerisonsData = (cb) => {
 let getBibleBooksData = (cb) => {
   $.get({
     url: 'https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/books?include-chapters=true&include-chapters-and-sections=true',
-    beforeSend: (xhr) => {xhr.setRequestHeader('api-key', API_KEY.apiBibleKey);},
+    beforeSend: (xhr) => {xhr.setRequestHeader('api-key', process.env.APIBIBLE_KEY);},
     error: (err) => {
       cb(err)
     },
@@ -41,7 +40,7 @@ let getBibleBooksData = (cb) => {
 
 let getChapterHTML = (chapter, cb) => {
   $.get({
-    url: `https://api.biblia.com/v1/bible/content/${chapter.version}.html?passage=${chapter.book + chapter.num}&style=fullyFormatted&key=${API_KEY.bibliaKey}`,
+    url: `https://api.biblia.com/v1/bible/content/${chapter.version}.html?passage=${chapter.book + chapter.num}&style=fullyFormatted&key=${process.env.BIBLIA_KEY}`,
     dataType: 'html',
     err: (err) => {
       cb(err);

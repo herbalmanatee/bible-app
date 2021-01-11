@@ -22,7 +22,7 @@ class VersionsForm extends React.Component {
     $.get({
       url: '/bibleForm',
       error: (err) => {
-        console.log(err)
+        console.log('mount', err)
       },
       success: (data) => {
         this.setState({

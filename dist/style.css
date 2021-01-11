@@ -11,3 +11,7 @@ body {
 .grid-item {
   margin: 10px;
 }
+
+#text {
+  width: 75%;
+}
