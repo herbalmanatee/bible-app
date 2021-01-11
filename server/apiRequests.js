@@ -39,7 +39,21 @@ let getBibleBooksData = (cb) => {
   });
 }
 
+let getChapterHTML = (chapter, cb) => {
+  $.get({
+    url: `https://api.biblia.com/v1/bible/content/${chapter.version}.html?passage=${chapter.book + chapter.num}&style=fullyFormatted&key=${API_KEY.bibliaKey}`,
+    dataType: 'html',
+    err: (err) => {
+      cb(err);
+    },
+    success: (data) => {
+      cb(null, data)
+    }
+  })
+}
+
 module.exports = {
   getBibleVersionsData: getBibleVerisonsData,
-  getBibleBooksData: getBibleBooksData
+  getBibleBooksData: getBibleBooksData,
+  getChapterHTML: getChapterHTML
 }

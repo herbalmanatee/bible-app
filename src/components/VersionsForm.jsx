@@ -1,7 +1,8 @@
 import React from 'react';
-const $ = require('jquery');
 import ChapterSelect from './ChapterSelect.jsx';
 import exampleData from '../exampleData.js';
+import ChapterText from './ChapterText.jsx';
+const $ = require('jquery');
 
 
 class VersionsForm extends React.Component {
@@ -12,7 +13,8 @@ class VersionsForm extends React.Component {
       bibles: exampleData.bibles["bibles"],
       version: null,
       books: exampleData.books["data"],
-      chapters: null
+      chapters: null,
+      chapterText: null
     }
   }
 
@@ -30,27 +32,49 @@ class VersionsForm extends React.Component {
         });
       }
     })
-
-    //get bible books list from api.bible
-
   }
 
   onVersionSubmit (event) {
     event.preventDefault();
-    //let books
+
     let versionValue = document.getElementById('versions').value
     let bookValue = document.getElementById('books').value
+
     let versionAbbrv = this.getAbbrv(this.state.bibles, versionValue, 'title', 'bible');
     let bookAbbrv = this.getAbbrv(this.state.books, bookValue, 'name', 'id');
-    console.log(versionAbbrv, bookAbbrv);
+
     for (let bookObj of this.state.books) {
       if (bookObj['id'] === bookAbbrv) {
-        console.log('match')
+        let chaptersObj = {
+          version: versionAbbrv,
+          book: [bookValue, bookAbbrv],
+          chapters: bookObj['chapters']
+        }
         this.setState({
-          chapters: bookObj
+          chapters: chaptersObj
         })
       }
     }
+  }
+
+  onChapterSelect (obj) {
+    console.log(obj);
+    $.post({
+      url: '/chapter',
+      data: JSON.stringify(obj),
+      contentType: 'application/json',
+      dataType: 'html',
+      err: (err) => {
+        console.log(err)
+      },
+      success: (data) => {
+        console.log(typeof data);
+        // let html = $.parseHTML(data)
+        this.setState({
+          chapterText: data
+        })
+      }
+    });
   }
 
   //returns abbrv value for book name or version name
@@ -66,8 +90,7 @@ class VersionsForm extends React.Component {
     //conditional rendering for chapters grid
     let chapterSelect;
     if (this.state.chapters) {
-      console.log('render');
-      chapterSelect = <ChapterSelect name={this.state.chapters["name"]}chapters={this.state.chapters["chapters"]}/>
+      chapterSelect = <ChapterSelect chaptersObj={this.state.chapters} onChapterSelect={this.onChapterSelect.bind(this)}/>
     } else {
       chapterSelect = <div></div>
     }
@@ -75,21 +98,25 @@ class VersionsForm extends React.Component {
     return (
       <div>
       <form id="form" onSubmit={()=>{this.onVersionSubmit(event)}}>
+
       <label>Select A Translation</label><br></br>
       <select id="versions">
         {this.state.bibles.map((bibleObj, index)=> {
           return <option id={bibleObj.abbreviatedTitle} key={index}>{bibleObj.title}</option>
         })}
       </select><br></br>
+
       <label>Select A Book</label><br></br>
       <select id="books">
         {this.state.books.map((bookObj, index)=> {
           return <option id={bookObj.id} key={index}>{bookObj.name}</option>
         })}
       </select><br></br>
-      <button type="submit">Submit</button>
+
+      <button type="submit">Show Chapters</button>
     </form>
     {chapterSelect}
+    <ChapterText text={this.state.chapterText}/>
       </div>
     )
   }
