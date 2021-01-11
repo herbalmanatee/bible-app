@@ -1,6 +1,5 @@
 import React from 'react';
 import ChapterSelect from './ChapterSelect.jsx';
-import exampleData from '../exampleData.js';
 import ChapterText from './ChapterText.jsx';
 const $ = require('jquery');
 
@@ -10,9 +9,9 @@ class VersionsForm extends React.Component {
     super(props)
 
     this.state = {
-      bibles: exampleData.bibles["bibles"],
+      bibles: [],
       version: null,
-      books: exampleData.books["data"],
+      books: [],
       chapters: null,
       chapterText: null
     }
