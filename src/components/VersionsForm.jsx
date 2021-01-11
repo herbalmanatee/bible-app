@@ -66,7 +66,6 @@ class VersionsForm extends React.Component {
         console.log(err)
       },
       success: (data) => {
-        // let html = $.parseHTML(data)
         this.setState({
           chapterText: data
         })

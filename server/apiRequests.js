@@ -2,8 +2,8 @@ const { JSDOM } = require('jsdom');
 const { window } = new JSDOM( "" );
 const $ = require('jquery')( window );
 require('dotenv').config();
-//functions that perform apiRequests
 
+//functions that perform apiRequests
 let getBibleVerisonsData = (cb) => {
   $.get({
     url: `https://api.biblia.com/v1/bible/find?key=${process.env.BIBLIA_KEY}`,
