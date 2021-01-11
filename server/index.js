@@ -1,5 +1,4 @@
 const express = require('express');
-const db = require('../db');
 const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 8080;
@@ -32,7 +31,6 @@ app.get('/bibleForm', (req, res) => {
 
 app.post('/chapter', (req, res) => {
   let chapter = req.body;
-  console.log(chapter);
   apiRequests.getChapterHTML(chapter, (err, data)=> {
     if (err) {
       console.log(err)

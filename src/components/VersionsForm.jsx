@@ -57,7 +57,6 @@ class VersionsForm extends React.Component {
   }
 
   onChapterSelect (obj) {
-    console.log(obj);
     $.post({
       url: '/chapter',
       data: JSON.stringify(obj),
@@ -67,7 +66,6 @@ class VersionsForm extends React.Component {
         console.log(err)
       },
       success: (data) => {
-        console.log(typeof data);
         // let html = $.parseHTML(data)
         this.setState({
           chapterText: data
