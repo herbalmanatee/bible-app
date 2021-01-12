@@ -27,13 +27,12 @@ app.get('/bibleForm', (req, res) => {
   })
 })
 
-app.post('/chapter', (req, res) => {
-  let chapter = req.body;
+app.get('/chapter/:version/:book/:num', (req, res) => {
+  let chapter = req.params;
   apiRequests.getChapterHTML(chapter, (err, data)=> {
     if (err) {
       console.log(err)
     } else {
-      //console.log(data);
       res.send(data);
     }
   })

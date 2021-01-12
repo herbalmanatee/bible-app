@@ -13,7 +13,8 @@ class VersionsForm extends React.Component {
       version: null,
       books: [],
       chapters: null,
-      chapterText: null
+      chapterText: null,
+      chapterInfo: null
     }
   }
 
@@ -35,9 +36,11 @@ class VersionsForm extends React.Component {
 
   onVersionSubmit (event) {
     event.preventDefault();
-
-    let versionValue = document.getElementById('versions').value
-    let bookValue = document.getElementById('books').value
+    $('#chapter-select').toggle(500);
+    let versionValue = $('#versions').val();
+    console.log(versionValue);
+    let bookValue = $('#books').val();
+    console.log(bookValue);
 
     let versionAbbrv = this.getAbbrv(this.state.bibles, versionValue, 'title', 'bible');
     let bookAbbrv = this.getAbbrv(this.state.books, bookValue, 'name', 'id');
@@ -47,7 +50,7 @@ class VersionsForm extends React.Component {
         let chaptersObj = {
           version: versionAbbrv,
           book: [bookValue, bookAbbrv],
-          chapters: bookObj['chapters']
+          chapters: bookObj['chapters'].slice(1)
         }
         this.setState({
           chapters: chaptersObj
@@ -56,11 +59,16 @@ class VersionsForm extends React.Component {
     }
   }
 
-  onChapterSelect (obj) {
-    $.post({
-      url: '/chapter',
-      data: JSON.stringify(obj),
-      contentType: 'application/json',
+  onChapterSelect (chapObj, chapNum, toggle) {
+    if (toggle) {
+      $('#chapter-select').toggle(500);
+    }
+    window.scrollTo(0,0);
+    this.setState({
+      chapterInfo: [chapObj, chapNum]
+    });
+    $.get({
+      url: `/chapter/${chapObj.version}/${chapObj.book[1]}/${chapNum}`,
       dataType: 'html',
       err: (err) => {
         console.log(err)
@@ -112,7 +120,7 @@ class VersionsForm extends React.Component {
       <button type="submit">Show Chapters</button>
     </form>
     {chapterSelect}
-    <ChapterText text={this.state.chapterText}/>
+    <ChapterText navClick={this.onChapterSelect.bind(this)} chapterInfo={this.state.chapterInfo} text={this.state.chapterText}/>
       </div>
     )
   }
