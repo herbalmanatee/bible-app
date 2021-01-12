@@ -4,6 +4,7 @@ let ChapterText = (props) => {
   let navElement;
   let chap = props.chapterInfo
   let navClick = props.navClick
+  let id = 'text'
 
   //increment chapter for navigation buttons
   let incChap = (direction, array) => {
@@ -17,7 +18,8 @@ let ChapterText = (props) => {
   }
 
   if (!props.text) {
-    navElement = <div></div>;
+    return(<div></div>);
+    //navElement = <div></div>;
   } else {
     if(props.chapterInfo[1] === '1') {
       navElement = <div><button onClick={()=>{navClick(chap[0], incChap(1, chap))}} className="nav-button">Next</button></div>
@@ -34,16 +36,62 @@ let ChapterText = (props) => {
         </div>
     }
   }
-
   return (
   <div id="text" >
-    <div dangerouslySetInnerHTML={{__html: props.text}}></div>
+    <div dangerouslySetInnerHTML={{__html: props.text}}></div><br></br>
     {navElement}
   </div>
-  )
+  );
 }
 
-export default ChapterText;
+// class ChapterText extends React.Component {
+//   constructor(props) {
+//     super(props)
 
-// BIBLIA_KEY = 7edbae6fd20d3652d82df675832f0464
-// APIBIBLE_KEY = e0ad6ace7e5d51147b7b937b37473399
+//     this.state = {
+//       id: 'hide',
+//       chapNum: null
+//     }
+//   }
+
+//   componentDidMount () {
+//     if (this.props.chapterInfo) {
+//       let num = this.props.chapterInfo[1]*1
+//       this.setState({
+//         id: 'text',
+//         chapNum: num
+//       })
+//     }
+//   }
+
+
+//   render() {
+//     let navElement;
+//     let chapNum = this.state.chapNum
+//     if (this.state.id === 'hide') {
+//       return <div></div>;
+//     } else if(this.state.chapNum === 1) {
+//         navElement = <div><button onClick={()=>{navClick(chap[0], chapNum+1)}} className="nav-button">Next</button></div>
+//       } else {
+//         navElement = <div>
+//           <button className="nav-button"
+//             onClick={()=>{navClick(chap[0], chapNum-1)}}>
+//             Prev
+//           </button>
+//           <button className="nav-button"
+//             onClick={()=>{navClick(chap[0], chapNum+1)}}>
+//             Next
+//           </button>
+//           </div>
+//       }
+
+//     return(
+//       <div id={this.state.id} >
+//       <div dangerouslySetInnerHTML={{__html: this.props.text}}></div><br></br>
+//       {navElement}
+//     </div>
+//     )
+//   }
+// }
+
+export default ChapterText;
