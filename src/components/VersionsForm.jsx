@@ -67,7 +67,7 @@ class VersionsForm extends React.Component {
       $('#chapter-select').toggle(500);
     }
     $('#search-data').hide(500);
-    $('#text').toggle(500);
+    $('#text').slideToggle(500);
     window.scrollTo(0,0);
     this.setState({
       chapterInfo: [chapObj, chapNum]
@@ -90,8 +90,9 @@ class VersionsForm extends React.Component {
   onSearch (event, query) {
     //make api request to server at /api/search
     event.preventDefault();
+    $('#chapter-select').toggle(500);
     $('#text').hide(500);
-    $('#search-data').toggle(500);
+    $('#search-data').slideToggle(500);
     let processedQuery = query.split(' ').join('%20');
     let version = $('#versions').val();
     let versionAbbrv = this.getAbbrv(this.state.bibles, version, 'title', 'bible');
