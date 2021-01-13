@@ -21,6 +21,7 @@ app.get('/bibleForm', (req, res) => {
   apiRequests.getBibleVersionsData((err, data)=> {
     if (err) {
       console.log(err)
+      res.sendStatus(500);
     } else {
       res.send(data);
     }
@@ -32,6 +33,18 @@ app.get('/chapter/:version/:book/:num', (req, res) => {
   apiRequests.getChapterHTML(chapter, (err, data)=> {
     if (err) {
       console.log(err)
+    } else {
+      res.send(data);
+    }
+  })
+})
+
+app.get('/search/:version/:query', (req, res) => {
+  let queryObj = req.params;
+  apiRequests.getSearchData(queryObj, (err, data) => {
+    if (err) {
+      console.log(err)
+      res.sendStatus(500);
     } else {
       res.send(data);
     }

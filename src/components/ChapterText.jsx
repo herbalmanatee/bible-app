@@ -38,6 +38,7 @@ let ChapterText = (props) => {
   }
   return (
   <div id="text" >
+    {navElement}
     <div dangerouslySetInnerHTML={{__html: props.text}}></div><br></br>
     {navElement}
   </div>

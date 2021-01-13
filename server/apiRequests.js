@@ -51,8 +51,22 @@ let getChapterHTML = (chapter, cb) => {
   })
 }
 
+let getSearchData = (queryObj, cb) => {
+  $.get({
+    url: `https://api.biblia.com/v1/bible/search/${queryObj.version}.js?query=${queryObj.query}&mode=verse&start=0&limit=20&key=${process.env.BIBLIA_KEY}`,
+    dataType: 'json',
+    err: (err) => {
+      cb(err);
+    },
+    success: (data) => {
+      cb(null, data["results"]);
+    }
+  })
+}
+
 module.exports = {
   getBibleVersionsData: getBibleVerisonsData,
   getBibleBooksData: getBibleBooksData,
-  getChapterHTML: getChapterHTML
+  getChapterHTML: getChapterHTML,
+  getSearchData: getSearchData
 }

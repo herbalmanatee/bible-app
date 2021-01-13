@@ -13,7 +13,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Bible App</h1>
+        <div className="header">
+          <h1>Bible App</h1>
+        </div>
         <VersionsForm />
       </div>
     );

@@ -1,6 +1,8 @@
 import React from 'react';
 import ChapterSelect from './ChapterSelect.jsx';
 import ChapterText from './ChapterText.jsx';
+import SearchForm from './SearchForm.jsx';
+import SearchData from './SearchData.jsx';
 const $ = require('jquery');
 
 
@@ -14,7 +16,8 @@ class VersionsForm extends React.Component {
       books: [],
       chapters: null,
       chapterText: null,
-      chapterInfo: null
+      chapterInfo: null,
+      searchData: []
     }
   }
 
@@ -63,6 +66,8 @@ class VersionsForm extends React.Component {
     if (toggle) {
       $('#chapter-select').toggle(500);
     }
+    $('#search-data').hide(500);
+    $('#text').toggle(500);
     window.scrollTo(0,0);
     this.setState({
       chapterInfo: [chapObj, chapNum]
@@ -77,8 +82,37 @@ class VersionsForm extends React.Component {
         this.setState({
           chapterText: data
         })
+        $('#text').show(500);
       }
     });
+  }
+
+  onSearch (event, query) {
+    //make api request to server at /api/search
+    event.preventDefault();
+    $('#text').hide(500);
+    $('#search-data').toggle(500);
+    let processedQuery = query.split(' ').join('%20');
+    let version = $('#versions').val();
+    let versionAbbrv = this.getAbbrv(this.state.bibles, version, 'title', 'bible');
+
+    $.get({
+      url: `/search/${versionAbbrv}/${processedQuery}`,
+      dataType: 'json',
+      err: (err) => {
+        console.log(err)
+      },
+      success: (data) => {
+        console.log(data);
+        if (data.length === 0) {
+          alert('Sorry, no results');
+        }
+        this.setState({
+          searchData: data
+        })
+        $('#search-data').show(500);
+      }
+    })
   }
 
   //returns abbrv value for book name or version name
@@ -101,26 +135,29 @@ class VersionsForm extends React.Component {
 
     return (
       <div>
-      <form id="form" onSubmit={()=>{this.onVersionSubmit(event)}}>
+        <div className="form-container">
+          <form className ="form-item" id="form" onSubmit={()=>{this.onVersionSubmit(event)}}>
+          <label>Select A Translation</label><br></br>
+          <select id="versions">
+            {this.state.bibles.map((bibleObj, index)=> {
+              return <option id={bibleObj.abbreviatedTitle} key={index}>{bibleObj.title}</option>
+            })}
+          </select><br></br>
 
-      <label>Select A Translation</label><br></br>
-      <select id="versions">
-        {this.state.bibles.map((bibleObj, index)=> {
-          return <option id={bibleObj.abbreviatedTitle} key={index}>{bibleObj.title}</option>
-        })}
-      </select><br></br>
+          <label>Select A Book</label><br></br>
+          <select id="books">
+            {this.state.books.map((bookObj, index)=> {
+              return <option id={bookObj.id} key={index}>{bookObj.name}</option>
+            })}
+          </select><br></br>
 
-      <label>Select A Book</label><br></br>
-      <select id="books">
-        {this.state.books.map((bookObj, index)=> {
-          return <option id={bookObj.id} key={index}>{bookObj.name}</option>
-        })}
-      </select><br></br>
-
-      <button type="submit">Show Chapters</button>
-    </form>
-    {chapterSelect}
-    <ChapterText navClick={this.onChapterSelect.bind(this)} chapterInfo={this.state.chapterInfo} text={this.state.chapterText}/>
+          <button type="submit">Show Chapters</button>
+          </form>
+          <SearchForm onSubmit={this.onSearch.bind(this)}/><br></br>
+        </div>
+        {chapterSelect}
+        <SearchData data={this.state.searchData}/>
+        <ChapterText navClick={this.onChapterSelect.bind(this)} chapterInfo={this.state.chapterInfo} text={this.state.chapterText}/>
       </div>
     )
   }
