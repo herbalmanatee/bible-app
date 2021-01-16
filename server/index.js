@@ -18,35 +18,61 @@ app.get('/', (req, res) => {
 
 //gets bibles data from api and returns data to VersionsForm to be rendered
 app.get('/bibleForm', (req, res) => {
-  apiRequests.getBibleVersionsData((err, data)=> {
-    if (err) {
-      console.log(err)
-      res.sendStatus(500);
-    } else {
-      res.send(data);
-    }
-  })
+  // apiRequests.getBibleVersionsData((err, data)=> {
+  //   if (err) {
+  //     console.log(err)
+  //     res.sendStatus(500);
+  //   } else {
+  //     res.send(data);
+  //   }
+  // })
+  // apiRequests.getBibleVersionsData()
+  //   .then(data => {
+  //     res.send(data)})
+  //   .catch(err => {alert(err)});
+  apiRequests.getBibleVersionsData()
+    .then((bibleVersionsData)=> {return bibleVersionsData})
+    .then((bibleVersionsData) => {
+      return apiRequests.getBibleBooksData()
+        .then((versionsData) => {return([bibleVersionsData, versionsData])})
+    })
+    .then(dataArr => {
+      console.log(dataArr);
+      res.send(dataArr)
+    })
+    .catch(err => {throw(err)});
 })
 
 app.get('/chapter/:version/:book/:num', (req, res) => {
   let chapter = req.params;
-  apiRequests.getChapterHTML(chapter, (err, data)=> {
-    if (err) {
-      console.log(err)
-    } else {
+
+  apiRequests.getChapterHTML(chapter)
+    .then((data) => {
       res.send(data);
-    }
-  })
+    })
+    .catch(err => {throw(err)})
+
+  //   apiRequests.getChapterHTML(chapter, (err, data)=> {
+  //   if (err) {
+  //     console.log(err)
+  //   } else {
+  //     res.send(data);
+  //   }
+  // })
 })
 
 app.get('/search/:version/:query/:book', (req, res) => {
   let queryObj = req.params;
-  apiRequests.getSearchData(queryObj, (err, data) => {
-    if (err) {
-      console.log(err)
-      res.sendStatus(500);
-    } else {
-      res.send(data);
-    }
-  })
+
+  apiRequests.getSearchData(queryObj)
+    .then(data => {res.send(data)})
+    .catch(err => {throw(err)})
+  // apiRequests.getSearchData(queryObj, (err, data) => {
+  //   if (err) {
+  //     console.log(err)
+  //     res.sendStatus(500);
+  //   } else {
+  //     res.send(data);
+  //   }
+  // })
 })

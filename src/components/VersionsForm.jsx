@@ -23,27 +23,36 @@ class VersionsForm extends React.Component {
 
   componentDidMount() {
     //get bible versions list from biblia api
+    // $.get({
+    //   url: '/bibleForm',
+    //   error: (err) => {
+    //     console.log('mount', err)
+    //   },
+    //   success: (data) => {
+    //     console.log(data);
+    //     this.setState({
+    //       bibles: data[0].bibles,
+    //       books: data[1].data,
+    //     });
+    //   }
+    // })
     $.get({
-      url: '/bibleForm',
-      error: (err) => {
-        console.log('mount', err)
-      },
-      success: (data) => {
-        this.setState({
-          bibles: data[0],
-          books: data[1],
-        });
-      }
+      url: '/bibleForm'
     })
+    .then((data) => {
+      this.setState({
+        bibles: data[0].bibles,
+        books: data[1].data,
+      })
+    })
+    .catch(err => alert(err));
   }
 
   onVersionSubmit (event) {
     event.preventDefault();
     $('#chapter-select').toggle();
     let versionValue = $('#versions').val();
-    //console.logog(versionValue);
     let bookValue = $('#books').val();
-    //console.logog(bookValue);
 
     let versionAbbrv = this.getAbbrv(this.state.bibles, versionValue, 'title', 'bible');
     let bookAbbrv = this.getAbbrv(this.state.books, bookValue, 'name', 'id');
@@ -72,24 +81,34 @@ class VersionsForm extends React.Component {
     this.setState({
       chapterInfo: [chapObj, chapNum]
     });
+    // $.get({
+    //   url: `/chapter/${chapObj.version}/${chapObj.book[1]}/${chapNum}`,
+    //   dataType: 'html',
+    //   err: (err) => {
+    //     console.log(err)
+    //   },
+    //   success: (data) => {
+    //     this.setState({
+    //       chapterText: data
+    //     })
+    //   }
+    // });
     $.get({
       url: `/chapter/${chapObj.version}/${chapObj.book[1]}/${chapNum}`,
-      dataType: 'html',
-      err: (err) => {
-        console.log(err)
-      },
-      success: (data) => {
-        this.setState({
-          chapterText: data
-        })
-      }
-    });
+      dataType: 'html'
+    })
+    .then((data) => {
+      this.setState({
+        chapterText: data
+      })
+    })
+    .catch(err => {alert(err)});
   }
 
   onSearch (event, query, book) {
     //make api request to server at /api/search
     event.preventDefault();
-    //console.logog(query, book);
+
     //animations and ui manipulation
     $('#chapter-select').hide(500);
     $('#text').hide(500);
@@ -106,23 +125,38 @@ class VersionsForm extends React.Component {
     //   url = `/search/${versionAbbrv}/${processedQuery}/${book}`
     // }
 
+    // $.get({
+    //   url: `/search/${versionAbbrv}/${processedQuery}/${book}`,
+    //   dataType: 'json',
+    //   err: (err) => {
+    //     console.log(err)
+    //   },
+    //   success: (data) => {
+    //     console.log(data.results);
+    //     if (data.length === 0) {
+    //       alert('Sorry, no results');
+    //     }
+    //     this.setState({
+    //       searchData: data.results
+    //     })
+    //     $('#search-data').show(500);
+    //   }
+    // })
     $.get({
       url: `/search/${versionAbbrv}/${processedQuery}/${book}`,
-      dataType: 'json',
-      err: (err) => {
-        console.log(err)
-      },
-      success: (data) => {
-        //console.logog(data);
-        if (data.length === 0) {
-          alert('Sorry, no results');
-        }
-        this.setState({
-          searchData: data
-        })
-        $('#search-data').show(500);
-      }
+      dataType: 'json'
     })
+    .then((data) => {
+      if (data.length === 0) {
+        alert('Sorry, no results')
+        $('#chapter-select').show(500);
+      }
+      this.setState({
+        searchData: data.results
+      })
+      $('#search-data').show(500);
+    })
+    .catch(err =>{alert(err)});
   }
 
   //returns abbrv value for book name or version name
