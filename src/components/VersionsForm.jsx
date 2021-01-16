@@ -39,7 +39,7 @@ class VersionsForm extends React.Component {
 
   onVersionSubmit (event) {
     event.preventDefault();
-    $('#chapter-select').toggle(500);
+    $('#chapter-select').toggle();
     let versionValue = $('#versions').val();
     console.log(versionValue);
     let bookValue = $('#books').val();
@@ -67,7 +67,7 @@ class VersionsForm extends React.Component {
       $('#chapter-select').toggle(500);
     }
     $('#search-data').hide(500);
-    $('#text').slideToggle(500);
+    $('#text').show();
     window.scrollTo(0,0);
     this.setState({
       chapterInfo: [chapObj, chapNum]
@@ -82,7 +82,6 @@ class VersionsForm extends React.Component {
         this.setState({
           chapterText: data
         })
-        $('#text').show(500);
       }
     });
   }
@@ -90,7 +89,7 @@ class VersionsForm extends React.Component {
   onSearch (event, query) {
     //make api request to server at /api/search
     event.preventDefault();
-    $('#chapter-select').toggle(500);
+    $('#chapter-select').hide(500);
     $('#text').hide(500);
     $('#search-data').slideToggle(500);
     let processedQuery = query.split(' ').join('%20');
