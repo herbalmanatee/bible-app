@@ -10,7 +10,7 @@ let ChapterText = (props) => {
   let incChap = (direction, array) => {
     if (direction) {
       array[1] = (array[1]*1 +1).toString();
-      console.log(array);
+      //console.log(array);
     } else {
       array[1] = (array[1]*1 -1).toString();
     }

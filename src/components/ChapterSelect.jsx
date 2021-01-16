@@ -1,12 +1,19 @@
 import React from 'react';
+const $ = require('jquery');
 
 let ChapterSelect = (props) => {
-  //console.log(props);
+
   let chapters = props.chaptersObj;
+  let book = props.chaptersObj.book[0]
   return (
     <div id="chapter-select">
       <h3>Select A Chapter</h3>
-      <h5>{props.chaptersObj.book[0]}</h5>
+      <form onSubmit={(event) => {
+          props.onSearch(event, document.getElementById('chap-query').value, book)}}>
+        <input id="chap-query"type="text"></input>
+        <button type="submit">Search {book}</button>
+      </form>
+      <h5>{book}</h5>
 
       <div className="grid-container">
         {chapters.chapters.map((chap, index) => {

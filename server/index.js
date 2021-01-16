@@ -39,7 +39,7 @@ app.get('/chapter/:version/:book/:num', (req, res) => {
   })
 })
 
-app.get('/search/:version/:query', (req, res) => {
+app.get('/search/:version/:query/:book', (req, res) => {
   let queryObj = req.params;
   apiRequests.getSearchData(queryObj, (err, data) => {
     if (err) {

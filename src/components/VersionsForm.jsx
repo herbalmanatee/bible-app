@@ -41,9 +41,9 @@ class VersionsForm extends React.Component {
     event.preventDefault();
     $('#chapter-select').toggle();
     let versionValue = $('#versions').val();
-    console.log(versionValue);
+    //console.logog(versionValue);
     let bookValue = $('#books').val();
-    console.log(bookValue);
+    //console.logog(bookValue);
 
     let versionAbbrv = this.getAbbrv(this.state.bibles, versionValue, 'title', 'bible');
     let bookAbbrv = this.getAbbrv(this.state.books, bookValue, 'name', 'id');
@@ -86,24 +86,34 @@ class VersionsForm extends React.Component {
     });
   }
 
-  onSearch (event, query) {
+  onSearch (event, query, book) {
     //make api request to server at /api/search
     event.preventDefault();
+    //console.logog(query, book);
+    //animations and ui manipulation
     $('#chapter-select').hide(500);
     $('#text').hide(500);
     $('#search-data').slideToggle(500);
+
+
     let processedQuery = query.split(' ').join('%20');
     let version = $('#versions').val();
     let versionAbbrv = this.getAbbrv(this.state.bibles, version, 'title', 'bible');
 
+    //build url based on chapter/version
+    // let url;
+    // if (book) {
+    //   url = `/search/${versionAbbrv}/${processedQuery}/${book}`
+    // }
+
     $.get({
-      url: `/search/${versionAbbrv}/${processedQuery}`,
+      url: `/search/${versionAbbrv}/${processedQuery}/${book}`,
       dataType: 'json',
       err: (err) => {
         console.log(err)
       },
       success: (data) => {
-        console.log(data);
+        //console.logog(data);
         if (data.length === 0) {
           alert('Sorry, no results');
         }
@@ -128,7 +138,10 @@ class VersionsForm extends React.Component {
     //conditional rendering for chapters grid
     let chapterSelect;
     if (this.state.chapters) {
-      chapterSelect = <ChapterSelect chaptersObj={this.state.chapters} onChapterSelect={this.onChapterSelect.bind(this)}/>
+      chapterSelect = <ChapterSelect
+      chaptersObj={this.state.chapters}
+      onChapterSelect={this.onChapterSelect.bind(this)}
+      onSearch={this.onSearch.bind(this)}/>
     } else {
       chapterSelect = <div></div>
     }
@@ -157,7 +170,10 @@ class VersionsForm extends React.Component {
         </div>
         {chapterSelect}
         <SearchData data={this.state.searchData}/>
-        <ChapterText navClick={this.onChapterSelect.bind(this)} chapterInfo={this.state.chapterInfo} text={this.state.chapterText}/>
+        <ChapterText
+          navClick={this.onChapterSelect.bind(this)}
+          chapterInfo={this.state.chapterInfo}
+          text={this.state.chapterText}/>
       </div>
     )
   }
