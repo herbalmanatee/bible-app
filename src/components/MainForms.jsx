@@ -7,32 +7,22 @@ class MainForms extends React.Component {
 
     this.state = {
       version: 'DARBY',
-      book: {},
+      book: 'Genesis',
       query: '',
-      clicked: false
     }
 
-    this.onVersionChange = this.onVersionChange.bind(this);
-    this.onBookChange = this.onBookChange.bind(this);
-    this.onQueryChange = this.onQueryChange.bind(this);
+    this.onFormChange = this.onFormChange.bind(this);
     this.onQuerySubmit = this.onQuerySubmit.bind(this);
     this.onChaptersClick = this.onChaptersClick.bind(this);
   }
 
-  onVersionChange (event) {
-    this.setState({version: event.target.value})
-  }
-
-  onBookChange (event) {
+  onFormChange (event) {
+    let name = event.target.name;
+    let value = event.target.value;
+    console.log(value);
     this.setState({
-      book: event.target.value,
-      clicked: true
+      [name] : value
     })
-    console.log(this.state.book)
-  }
-
-  onQueryChange (event) {
-    this.setState({query: event.target.value});
   }
 
   onQuerySubmit(event) {
@@ -42,12 +32,7 @@ class MainForms extends React.Component {
   }
 
   onChaptersClick () {
-    console.log('here');
-    if (this.state.clicked) {
-      this.props.showChapters(this.state.version, this.state.book);
-    } else {
-      alert('Please Select A Book')
-    }
+    this.props.showChapters(this.state.version, this.state.book);
   }
 
 
@@ -58,9 +43,9 @@ class MainForms extends React.Component {
           <form
             className="form-item"
             value={this.state.version}
-            onChange={this.onVersionChange}>
+            onChange={this.onFormChange}>
             <label>Select A Translation</label><br></br>
-            <select id="versions">
+            <select name="version" id="versions">
               {this.props.bibles.map((bibleObj, i) => {
                 return(
                   <option value={bibleObj.bible}
@@ -73,29 +58,30 @@ class MainForms extends React.Component {
           <form
             className="form-item"
             value={this.state.book}
-            onChange={this.onBookChange}>
+            onChange={this.onFormChange}>
             <label>Select A Book</label><br></br>
-            <select id="books">
+            <select name="book" id="books">
               {this.props.books.map((bookObj,i) => {
                 return (
-                  <option value={bookObj} key={i}>{bookObj.name}</option>
-                )
-              })}
+                  <option value={bookObj.name} key={i}>{bookObj.name}</option>
+                );
+              }, this)}
             </select>
           </form>
 
           <form onSubmit={this.onQuerySubmit} className="form-item" id="search">
             <input
+              name="query"
               type="text"
               value={this.state.query}
-              onChange={this.onQueryChange}>
+              onChange={this.onFormChange}>
             </input>
             <button type="submit">Search</button>
           </form>
         </div>
         <button
-          onClick={this.onChaptersClick} type="submit">
-          Select A Chapter
+          onClick={this.onChaptersClick}>
+          Show Chapters
       </button>
       </div>
     )

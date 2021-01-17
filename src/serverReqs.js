@@ -24,9 +24,9 @@ let getSearchResults = (versionAbbrv, processedQuery, book) => {
 }
 
 
-let getChapterInfo = (chapObj, chapNum) => {
+let getChapterInfo = (version, book, chapNum) => {
   return ($.get({
-    url: `/chapter/${chapObj.version}/${chapObj.book[1]}/${chapNum}`,
+    url: `/chapter/${version}/${book}/${chapNum}`,
     dataType: 'html'
   })
   .then((data) => {
