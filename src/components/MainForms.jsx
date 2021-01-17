@@ -7,11 +7,16 @@ class MainForms extends React.Component {
 
     this.state = {
       version: 'DARBY',
-      book: 'Genesis'
+      book: {},
+      query: '',
+      clicked: false
     }
 
     this.onVersionChange = this.onVersionChange.bind(this);
     this.onBookChange = this.onBookChange.bind(this);
+    this.onQueryChange = this.onQueryChange.bind(this);
+    this.onQuerySubmit = this.onQuerySubmit.bind(this);
+    this.onChaptersClick = this.onChaptersClick.bind(this);
   }
 
   onVersionChange (event) {
@@ -19,7 +24,30 @@ class MainForms extends React.Component {
   }
 
   onBookChange (event) {
-    this.setState({book: event.target.value})
+    this.setState({
+      book: event.target.value,
+      clicked: true
+    })
+    console.log(this.state.book)
+  }
+
+  onQueryChange (event) {
+    this.setState({query: event.target.value});
+  }
+
+  onQuerySubmit(event) {
+    event.preventDefault();
+    let processedQuery = this.state.query.split(' ').join('');
+    this.props.onSearch(this.state.version, processedQuery)
+  }
+
+  onChaptersClick () {
+    console.log('here');
+    if (this.state.clicked) {
+      this.props.showChapters(this.state.version, this.state.book);
+    } else {
+      alert('Please Select A Book')
+    }
   }
 
 
@@ -31,11 +59,11 @@ class MainForms extends React.Component {
             className="form-item"
             value={this.state.version}
             onChange={this.onVersionChange}>
-            <label>Select A Translation</label>
+            <label>Select A Translation</label><br></br>
             <select id="versions">
               {this.props.bibles.map((bibleObj, i) => {
                 return(
-                  <option value={bibleObj.abbreviatedTitle}
+                  <option value={bibleObj.bible}
                     key={i}>{bibleObj.title}</option>
                 );
               }) }
@@ -50,12 +78,25 @@ class MainForms extends React.Component {
             <select id="books">
               {this.props.books.map((bookObj,i) => {
                 return (
-                  <option value={bookObj.name} key={i}>{bookObj.name}</option>
+                  <option value={bookObj} key={i}>{bookObj.name}</option>
                 )
               })}
             </select>
           </form>
+
+          <form onSubmit={this.onQuerySubmit} className="form-item" id="search">
+            <input
+              type="text"
+              value={this.state.query}
+              onChange={this.onQueryChange}>
+            </input>
+            <button type="submit">Search</button>
+          </form>
         </div>
+        <button
+          onClick={this.onChaptersClick} type="submit">
+          Select A Chapter
+      </button>
       </div>
     )
   }
@@ -63,7 +104,9 @@ class MainForms extends React.Component {
 
 MainForms.propTypes = {
   bibles: PropTypes.array.isRequired,
-  books: PropTypes.array.isRequired
+  books: PropTypes.array.isRequired,
+  onSearch: PropTypes.func.isRequired,
+  showChapters: PropTypes.func.isRequired
 }
 
 export default MainForms;

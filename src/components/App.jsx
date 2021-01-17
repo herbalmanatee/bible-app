@@ -1,7 +1,7 @@
 import React from 'react';
 //import VersionsForm from './VersionsForm.jsx';
 import MainForms from './MainForms.jsx';
-import {getBiblesList} from '../serverReqs';
+import {getBiblesList, getSearchResults} from '../serverReqs';
 
 class App extends React.Component {
   constructor(props) {
@@ -11,6 +11,8 @@ class App extends React.Component {
       bibles: [],
       books: []
     }
+    this.onSearch = this.onSearch.bind(this);
+    this.onShowChaptersSubmit = this.onShowChaptersSubmit.bind(this);
   }
 
   componentDidMount () {
@@ -23,6 +25,18 @@ class App extends React.Component {
       })
   }
 
+  onSearch(version, query, book) {
+    getSearchResults(version, query, book)
+      .then(data => {
+        data.length ? console.log(data) : alert('sorry, no results')
+      })
+      .catch(err => {throw err});
+  }
+
+  onShowChaptersSubmit (version, book) {
+    console.log(version, book.name)
+  }
+
   render() {
     return (
       <div>
@@ -32,7 +46,9 @@ class App extends React.Component {
         {/* <VersionsForm /> */}
         <MainForms
           books={this.state.books}
-          bibles={this.state.bibles} />
+          bibles={this.state.bibles}
+          onSearch={this.onSearch}
+          showChapters={this.onShowChaptersSubmit} />
       </div>
     );
   }
