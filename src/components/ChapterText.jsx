@@ -45,54 +45,5 @@ let ChapterText = (props) => {
   );
 }
 
-// class ChapterText extends React.Component {
-//   constructor(props) {
-//     super(props)
-
-//     this.state = {
-//       id: 'hide',
-//       chapNum: null
-//     }
-//   }
-
-//   componentDidMount () {
-//     if (this.props.chapterInfo) {
-//       let num = this.props.chapterInfo[1]*1
-//       this.setState({
-//         id: 'text',
-//         chapNum: num
-//       })
-//     }
-//   }
-
-
-//   render() {
-//     let navElement;
-//     let chapNum = this.state.chapNum
-//     if (this.state.id === 'hide') {
-//       return <div></div>;
-//     } else if(this.state.chapNum === 1) {
-//         navElement = <div><button onClick={()=>{navClick(chap[0], chapNum+1)}} className="nav-button">Next</button></div>
-//       } else {
-//         navElement = <div>
-//           <button className="nav-button"
-//             onClick={()=>{navClick(chap[0], chapNum-1)}}>
-//             Prev
-//           </button>
-//           <button className="nav-button"
-//             onClick={()=>{navClick(chap[0], chapNum+1)}}>
-//             Next
-//           </button>
-//           </div>
-//       }
-
-//     return(
-//       <div id={this.state.id} >
-//       <div dangerouslySetInnerHTML={{__html: this.props.text}}></div><br></br>
-//       {navElement}
-//     </div>
-//     )
-//   }
-// }
 
 export default ChapterText;
