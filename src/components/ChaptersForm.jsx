@@ -1,10 +1,10 @@
 import React from 'react';
-// import ChapterButton from './ChapterButton.jsx';
 import PropTypes from 'prop-types';
 
 let ChaptersForm = (props) => {
-  if (props.chapters.length === 0) {
-    return <div>NO CHAPTERS NOW</div>
+
+  if(!props.show) {
+    return null;
   }
 
   return(
@@ -23,7 +23,8 @@ let ChaptersForm = (props) => {
 
 ChaptersForm.propTypes = {
   chapters: PropTypes.array.isRequired,
-  onChapterSelect: PropTypes.func.isRequired
+  onChapterSelect: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired
 }
 
 export default ChaptersForm;

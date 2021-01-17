@@ -6,6 +6,10 @@ let ChapterView = (props) => {
   let chapterNum = props.chapterNum;
   let navElement;
 
+  //conditional rendering for entire component
+  if (!props.show) {
+    return null
+  }
   //conditional rendering for navigation buttons Prev/Next chapter
   if (chapterNum === 1) {
     navElement =
@@ -43,6 +47,7 @@ let ChapterView = (props) => {
 }
 
 ChapterView.propTypes = {
+  show: PropTypes.bool.isRequired,
   text: PropTypes.string.isRequired,
   chapterNum: PropTypes.number.isRequired,
   bookLength: PropTypes.number.isRequired,
