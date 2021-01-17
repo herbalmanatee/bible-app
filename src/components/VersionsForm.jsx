@@ -3,6 +3,7 @@ import ChapterSelect from './ChapterSelect.jsx';
 import ChapterText from './ChapterText.jsx';
 import SearchForm from './SearchForm.jsx';
 import SearchData from './SearchData.jsx';
+const serverReqs = require('../serverReqs.js');
 const $ = require('jquery');
 
 
@@ -19,33 +20,19 @@ class VersionsForm extends React.Component {
       chapterInfo: null,
       searchData: []
     }
+    this.onSearch = this.onSearch.bind(this);
+    this.onChapterSelect = this.onChapterSelect.bind(this);
+    this.onVersionSubmit = this.onVersionSubmit.bind(this);
   }
 
   componentDidMount() {
-    //get bible versions list from biblia api
-    // $.get({
-    //   url: '/bibleForm',
-    //   error: (err) => {
-    //     console.log('mount', err)
-    //   },
-    //   success: (data) => {
-    //     console.log(data);
-    //     this.setState({
-    //       bibles: data[0].bibles,
-    //       books: data[1].data,
-    //     });
-    //   }
-    // })
-    $.get({
-      url: '/bibleForm'
-    })
-    .then((data) => {
-      this.setState({
-        bibles: data[0].bibles,
-        books: data[1].data,
+    serverReqs.getBiblesList()
+      .then((data) => {
+        this.setState({
+          bibles: data[0].bibles,
+          books: data[1].data,
+        })
       })
-    })
-    .catch(err => alert(err));
   }
 
   onVersionSubmit (event) {
@@ -81,28 +68,14 @@ class VersionsForm extends React.Component {
     this.setState({
       chapterInfo: [chapObj, chapNum]
     });
-    // $.get({
-    //   url: `/chapter/${chapObj.version}/${chapObj.book[1]}/${chapNum}`,
-    //   dataType: 'html',
-    //   err: (err) => {
-    //     console.log(err)
-    //   },
-    //   success: (data) => {
-    //     this.setState({
-    //       chapterText: data
-    //     })
-    //   }
-    // });
-    $.get({
-      url: `/chapter/${chapObj.version}/${chapObj.book[1]}/${chapNum}`,
-      dataType: 'html'
-    })
-    .then((data) => {
-      this.setState({
-        chapterText: data
+
+    //get chapter info
+    serverReqs.getChapterInfo(chapObj, chapNum)
+      .then((data) => {
+        this.setState({
+          chapterText: data
+        })
       })
-    })
-    .catch(err => {alert(err)});
   }
 
   onSearch (event, query, book) {
@@ -119,44 +92,18 @@ class VersionsForm extends React.Component {
     let version = $('#versions').val();
     let versionAbbrv = this.getAbbrv(this.state.bibles, version, 'title', 'bible');
 
-    //build url based on chapter/version
-    // let url;
-    // if (book) {
-    //   url = `/search/${versionAbbrv}/${processedQuery}/${book}`
-    // }
-
-    // $.get({
-    //   url: `/search/${versionAbbrv}/${processedQuery}/${book}`,
-    //   dataType: 'json',
-    //   err: (err) => {
-    //     console.log(err)
-    //   },
-    //   success: (data) => {
-    //     console.log(data.results);
-    //     if (data.length === 0) {
-    //       alert('Sorry, no results');
-    //     }
-    //     this.setState({
-    //       searchData: data.results
-    //     })
-    //     $('#search-data').show(500);
-    //   }
-    // })
-    $.get({
-      url: `/search/${versionAbbrv}/${processedQuery}/${book}`,
-      dataType: 'json'
-    })
-    .then((data) => {
-      if (data.length === 0) {
-        alert('Sorry, no results')
-        $('#chapter-select').show(500);
-      }
-      this.setState({
-        searchData: data.results
+    //get search results from biblia
+    serverReqs.getSearchResults(versionAbbrv, processedQuery, book)
+      .then((data) => {
+        if (data.length === 0) {
+          alert('Sorry, no results')
+          $('#chapter-select').show(500);
+        }
+        this.setState({
+          searchData: data
+        })
+        $('#search-data').show(500);
       })
-      $('#search-data').show(500);
-    })
-    .catch(err =>{alert(err)});
   }
 
   //returns abbrv value for book name or version name
@@ -200,7 +147,7 @@ class VersionsForm extends React.Component {
 
           <button type="submit">Show Chapters</button>
           </form>
-          <SearchForm onSubmit={this.onSearch.bind(this)}/><br></br>
+          <SearchForm onSubmit={this.onSearch}/><br></br>
         </div>
         {chapterSelect}
         <SearchData data={this.state.searchData}/>
