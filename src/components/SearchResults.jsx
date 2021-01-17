@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 let SearchResults = (props) => {
+  //conditional rendering for component
+  if (!props.show) {
+    return null;
+  }
 
   return (
     <div id="search-data">
@@ -18,6 +22,7 @@ let SearchResults = (props) => {
 }
 
 SearchResults.propTypes = {
+  show: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired
 }
 

@@ -43,7 +43,9 @@ class App extends React.Component {
     getSearchResults(version, query, book)
       .then(data => {
         data.length ? this.setState({
-          searchResults: data
+          searchResults: data,
+          showChapText: false,
+          showSearchResults: true
         }) : alert('sorry, no results')
       })
       .catch(err => {throw err});
@@ -61,7 +63,7 @@ class App extends React.Component {
       chapters: chapters,
       version: version,
       book: book,
-      showChapters: true
+      showChapters: !this.state.showChapters
     })
   }
 
@@ -73,7 +75,8 @@ class App extends React.Component {
         this.setState({
           chapterHTML: data,
           chapterNum: chapNum,
-          showChapText: true
+          showChapText: true,
+          showSearchResults: false
         })
       });
   }
@@ -86,6 +89,7 @@ class App extends React.Component {
         </div>
         {/* <VersionsForm /> */}
         <MainForms
+          show={this.state.showChapters}
           books={this.state.books}
           bibles={this.state.bibles}
           onSearch={this.onSearch}
@@ -100,7 +104,7 @@ class App extends React.Component {
           chapterNum={this.state.chapterNum}
           bookLength={this.state.chapters.length}
           onChapterSelect={this.onChapterSelect}/>
-        <SearchResults data={this.state.searchResults}/>
+        <SearchResults show={this.state.showSearchResults} data={this.state.searchResults}/>
       </div>
     );
   }

@@ -37,6 +37,8 @@ class MainForms extends React.Component {
 
 
   render () {
+    let buttonText;
+    this.props.show ? buttonText = 'Hide Chapters' : buttonText = 'Show Chapters'
     return(
       <div>
         <div className="form-container">
@@ -81,7 +83,7 @@ class MainForms extends React.Component {
         </div>
         <button
           onClick={this.onChaptersClick}>
-          Show Chapters
+          {buttonText}
       </button>
       </div>
     )
@@ -89,6 +91,7 @@ class MainForms extends React.Component {
 }
 
 MainForms.propTypes = {
+  show: PropTypes.bool.isRequired,
   bibles: PropTypes.array.isRequired,
   books: PropTypes.array.isRequired,
   onSearch: PropTypes.func.isRequired,
