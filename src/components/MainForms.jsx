@@ -23,9 +23,6 @@ class MainForms extends React.Component {
     this.setState({
       [name] : value
     })
-    if (name === ('version' || 'book')) {
-      this.props.showChapters(this.state.version, this.state.book);
-    }
   }
 
   onQuerySubmit(event, byBook) {

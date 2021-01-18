@@ -36,6 +36,7 @@ body {
 
 .grid-item {
   margin: 10px;
+  margin-left: 25px;
 }
 
 .form-container {

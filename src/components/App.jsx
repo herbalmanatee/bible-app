@@ -1,5 +1,4 @@
 import React from 'react';
-//import VersionsForm from './VersionsForm.jsx';
 import MainForms from './MainForms.jsx';
 import ChaptersForm from './ChaptersForm.jsx';
 import ChapterView from './ChapterView.jsx';
@@ -63,7 +62,7 @@ class App extends React.Component {
       chapters: chapters,
       version: version,
       book: book,
-      showChapters: !this.state.showChapters
+      showChapters: true
     })
   }
 
