@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {searchSvg} from './buttonSvg.jsx';
 
 class MainForms extends React.Component {
   constructor(props){
@@ -9,6 +10,7 @@ class MainForms extends React.Component {
       version: 'DARBY',
       book: 'Genesis',
       query: '',
+      queryParam: 'DARBY'
     }
 
     this.onFormChange = this.onFormChange.bind(this);
@@ -25,12 +27,23 @@ class MainForms extends React.Component {
     })
   }
 
-  onQuerySubmit(event, byBook) {
+  onQuerySubmit(event) {
     event.preventDefault();
     let book;
     let processedQuery = this.state.query.split(' ').join('');
-    byBook ? book = this.state.book : book = null
-    console.log(book);
+    let param = this.state.queryParam;
+
+    //conditionals for search params based on client choice
+    if (param === this.state.version) {
+      book = null
+    } else if (param === 'ot') {
+      book = 'Genesis-Malachi'
+    } else if (param === 'nt') {
+      book = 'Matthew-Revelation'
+    } else {
+      book = this.state.book
+    }
+
     this.props.onSearch(this.state.version, processedQuery, book)
   }
 
@@ -74,15 +87,26 @@ class MainForms extends React.Component {
             </select>
           </form>
 
-          <form className="form-item form3" id="search">
+          <form
+            onChange={this.onFormChange}
+            className="form-item form3"
+            id="search">
+            <label>Search By</label><br></br>
+            <select name="queryParam">
+              <option value={this.state.version}>Whole Bible</option>
+              <option value="ot">Old Testament</option>
+              <option value="nt">New Testament</option>
+              <option value={this.state.book}>{this.state.book}</option>
+            </select><br></br>
             <input
               name="query"
               type="text"
               value={this.state.query}
               onChange={this.onFormChange}>
-            </input><br></br>
-            <button onClick={(event) =>(this.onQuerySubmit(event))} type="submit">Search Bible</button>
-            <button onClick={(event) => {this.onQuerySubmit(event, true)}} type="submit">Search {this.state.book}</button>
+            </input>
+            <button id="search-button" onClick={(event) =>(this.onQuerySubmit(event))} type="submit">
+              {searchSvg}
+            </button>
           </form>
         </div>
         <button
@@ -104,3 +128,4 @@ MainForms.propTypes = {
 }
 
 export default MainForms;
+

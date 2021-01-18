@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {buttonNextSvg, buttonPrevSvg} from './buttonSvg.jsx';
 
 let ChapterView = (props) => {
   let bookLength = props.bookLength;
   let chapterNum = props.chapterNum;
   let navElement;
-
   //conditional rendering for entire component
   if (!props.show) {
     return null
@@ -15,24 +15,24 @@ let ChapterView = (props) => {
     navElement =
       <button
       onClick={()=> {props.onChapterSelect((chapterNum+1))}}>
-      Next
+      {buttonNextSvg}
       </button>
   } else if (chapterNum === bookLength) {
     navElement =
       <button
       onClick={()=> {props.onChapterSelect(chapterNum-1)}}>
-      Prev
+      {buttonPrevSvg}
       </button>
   } else {
     navElement =
     <div>
       <button
         onClick={()=> {props.onChapterSelect(chapterNum-1)}}>
-        Prev
-        </button>
+        {buttonPrevSvg}
+        </button>{" "}
         <button
         onClick={()=> {props.onChapterSelect(chapterNum+1)}}>
-        Next
+        {buttonNextSvg}
         </button>
     </div>
   }

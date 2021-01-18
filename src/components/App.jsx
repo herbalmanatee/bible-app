@@ -4,6 +4,7 @@ import ChaptersForm from './ChaptersForm.jsx';
 import ChapterView from './ChapterView.jsx';
 import SearchResults from './SearchResults.jsx';
 import {getBiblesList, getSearchResults, getChapterInfo} from '../serverReqs';
+import {spaceSvg, lightSvg} from './buttonSvg.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -94,13 +95,14 @@ class App extends React.Component {
   }
 
   render() {
-    let theme;
-    this.state.theme ? theme = 'Light Mode' : theme = 'Space Mode'
+
+    let themeSvg;
+    this.state.theme ? themeSvg= lightSvg : themeSvg = spaceSvg
     return (
       <div>
         <div className="header">
           <h1>Bible App</h1>
-          <button id="mode" onClick={this.onThemeChange}>Switch to {theme}</button>
+          <button id="mode" onClick={this.onThemeChange}>{themeSvg}</button>
         </div>
         {/* <VersionsForm /> */}
         <MainForms
