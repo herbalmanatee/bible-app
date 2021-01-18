@@ -1,9 +1,30 @@
-body {
+/* body {
   background-color: #7da2a9;
   color: #24363a;
   font-family: "Roboto";
   padding: 0;
   margin: 0;
+} */
+
+#light {
+  background-color: #d3dddf;
+  color: #24363a;
+  font-family: "Roboto";
+  padding: 0;
+  margin: 0;
+}
+
+#space {
+  background-color: #7da2a9;
+  color: #24363a;
+  font-family: "Roboto";
+  padding: 0;
+  margin: 0;
+}
+
+#mode {
+  margin-left: 25px;
+  margin-bottom: 5px;
 }
 
 .header {

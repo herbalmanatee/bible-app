@@ -20,11 +20,13 @@ class App extends React.Component {
       searchResults: [],
       showChapters: false,
       showChapText: false,
-      showSearchResults: false
+      showSearchResults: false,
+      theme: true
     }
     this.onSearch = this.onSearch.bind(this);
     this.onShowChaptersSubmit = this.onShowChaptersSubmit.bind(this);
     this.onChapterSelect = this.onChapterSelect.bind(this);
+    this.onThemeChange = this.onThemeChange.bind(this);
   }
 
   componentDidMount () {
@@ -67,7 +69,9 @@ class App extends React.Component {
   }
 
   onChapterSelect (chapNum) {
+    window.scrollTo(0,0);
     chapNum = chapNum*1
+
     //api request for chapter html
     getChapterInfo(this.state.version, this.state.book, chapNum)
       .then((data) => {
@@ -81,11 +85,22 @@ class App extends React.Component {
       });
   }
 
+  onThemeChange () {
+    this.setState({
+      theme: !this.state.theme
+    })
+    let bodyElement = document.querySelectorAll('body')[0];
+    this.state.theme ? bodyElement.id = 'light' : bodyElement.id = 'space'
+  }
+
   render() {
+    let theme;
+    this.state.theme ? theme = 'Light Mode' : theme = 'Space Mode'
     return (
       <div>
         <div className="header">
           <h1>Bible App</h1>
+          <button id="mode" onClick={this.onThemeChange}>Switch to {theme}</button>
         </div>
         {/* <VersionsForm /> */}
         <MainForms
