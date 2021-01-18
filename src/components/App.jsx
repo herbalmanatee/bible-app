@@ -13,7 +13,7 @@ class App extends React.Component {
     this.state = {
       bibles: [],
       books: [],
-      version: '',
+      version: 'DARBY',
       chapters: [],
       book: [],
       chapterNum: 1,
@@ -69,21 +69,33 @@ class App extends React.Component {
     })
   }
 
-  onChapterSelect (chapNum) {
+  onChapterSelect (chap, fromSearch) {
     window.scrollTo(0,0);
-    chapNum = chapNum*1
-
     //api request for chapter html
-    getChapterInfo(this.state.version, this.state.book, chapNum)
-      .then((data) => {
-        this.setState({
-          chapterHTML: data,
-          chapterNum: chapNum,
-          showChapText: true,
-          showSearchResults: false,
-          showChapters: false
-        })
-      });
+    let request = () => {
+      getChapterInfo(this.state.version, this.state.book, chapNum)
+        .then((data) => {
+          this.setState({
+            chapterHTML: data,
+            chapterNum: chapNum,
+            showChapText: true,
+            showSearchResults: false,
+            showChapters: false
+          })
+        });
+    }
+
+    //conditional for if invoking from a search result
+    let chapNum;
+    if (fromSearch) {
+      chapNum = chap.chapNum * 1;
+      this.setState({
+        book: chap.chapter
+      }, ()=>{request()})
+    } else {
+      chapNum = chap*1
+      request()
+    }
   }
 
   onThemeChange () {
@@ -104,7 +116,6 @@ class App extends React.Component {
           <h1>Bible App</h1>
           <button id="mode" onClick={this.onThemeChange}>{themeSvg}</button>
         </div>
-        {/* <VersionsForm /> */}
         <MainForms
           show={this.state.showChapters}
           books={this.state.books}
@@ -121,7 +132,10 @@ class App extends React.Component {
           chapterNum={this.state.chapterNum}
           bookLength={this.state.chapters.length}
           onChapterSelect={this.onChapterSelect}/>
-        <SearchResults show={this.state.showSearchResults} data={this.state.searchResults}/>
+        <SearchResults
+          show={this.state.showSearchResults}
+          data={this.state.searchResults}
+          onChapterSelect={this.onChapterSelect}/>
       </div>
     );
   }

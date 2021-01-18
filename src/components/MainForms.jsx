@@ -43,7 +43,6 @@ class MainForms extends React.Component {
     } else {
       book = this.state.book
     }
-
     this.props.onSearch(this.state.version, processedQuery, book)
   }
 
@@ -96,7 +95,7 @@ class MainForms extends React.Component {
               <option value={this.state.version}>Whole Bible</option>
               <option value="ot">Old Testament</option>
               <option value="nt">New Testament</option>
-              <option value={this.state.book}>{this.state.book}</option>
+              <option value={this.state.book}>Book ({this.state.book})</option>
             </select><br></br>
             <input
               name="query"

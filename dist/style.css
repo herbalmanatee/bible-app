@@ -25,6 +25,11 @@
 #mode {
   margin-left: 25px;
   text-align: top;
+  border: none;
+  background: none;
+}
+button:focus {
+  outline: none;
 }
 
 h1 {
@@ -35,7 +40,7 @@ h1 {
 }
 
 .header {
-  background-color: #24363ac5 ;
+  background-color: #24363a ;
   color: #7da2a9;
   width: 100%;
   height: 70px;
