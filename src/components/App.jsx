@@ -76,7 +76,8 @@ class App extends React.Component {
           chapterHTML: data,
           chapterNum: chapNum,
           showChapText: true,
-          showSearchResults: false
+          showSearchResults: false,
+          showChapters: false
         })
       });
   }

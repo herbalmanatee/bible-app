@@ -23,12 +23,18 @@ class MainForms extends React.Component {
     this.setState({
       [name] : value
     })
+    if (name === ('version' || 'book')) {
+      this.props.showChapters(this.state.version, this.state.book);
+    }
   }
 
-  onQuerySubmit(event) {
+  onQuerySubmit(event, byBook) {
     event.preventDefault();
+    let book;
     let processedQuery = this.state.query.split(' ').join('');
-    this.props.onSearch(this.state.version, processedQuery)
+    byBook ? book = this.state.book : book = null
+    console.log(book);
+    this.props.onSearch(this.state.version, processedQuery, book)
   }
 
   onChaptersClick () {
@@ -43,7 +49,7 @@ class MainForms extends React.Component {
       <div>
         <div className="form-container">
           <form
-            className="form-item"
+            className="form-item form1"
             value={this.state.version}
             onChange={this.onFormChange}>
             <label>Select A Translation</label><br></br>
@@ -58,7 +64,7 @@ class MainForms extends React.Component {
           </form><br></br>
 
           <form
-            className="form-item"
+            className="form-item form2"
             value={this.state.book}
             onChange={this.onFormChange}>
             <label>Select A Book</label><br></br>
@@ -71,20 +77,22 @@ class MainForms extends React.Component {
             </select>
           </form>
 
-          <form onSubmit={this.onQuerySubmit} className="form-item" id="search">
+          <form className="form-item form3" id="search">
             <input
               name="query"
               type="text"
               value={this.state.query}
               onChange={this.onFormChange}>
-            </input>
-            <button type="submit">Search</button>
+            </input><br></br>
+            <button onClick={(event) =>(this.onQuerySubmit(event))} type="submit">Search Bible</button>
+            <button onClick={(event) => {this.onQuerySubmit(event, true)}} type="submit">Search {this.state.book}</button>
           </form>
         </div>
         <button
+          id="chapter-show"
           onClick={this.onChaptersClick}>
           {buttonText}
-      </button>
+      </button><br></br>
       </div>
     )
   }

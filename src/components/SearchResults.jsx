@@ -9,6 +9,7 @@ let SearchResults = (props) => {
 
   return (
     <div id="search-data">
+      <h4>{props.data.length} Results</h4>
       {props.data.map((dataObj, i) => {
         return (
           <div key={i} className="search-result">
