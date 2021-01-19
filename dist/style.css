@@ -1,10 +1,7 @@
-/* body {
-  background-color: #7da2a9;
-  color: #24363a;
-  font-family: "Roboto";
-  padding: 0;
-  margin: 0;
-} */
+
+body {
+  font-size: x-large;
+}
 
 #light {
   background-color: #d3dddf;
@@ -23,6 +20,7 @@
 }
 
 #mode {
+  margin: auto;
   margin-left: 25px;
   text-align: top;
   border: none;
@@ -34,6 +32,7 @@ button:focus {
 
 h1 {
   text-align: center;
+  font-size: 32px;
   padding: 0;
   margin: auto;
   width: 30%
@@ -96,10 +95,7 @@ h4 {
 }
 
 
-/* #search {
-  margin-top: 18px;
-  margin-left: 60%;
-} */
+
 #search-data {
   margin-left: 25px;
   margin-top: 30px;
@@ -122,13 +118,6 @@ h4 {
   max-width: 172px;
   min-width: 172px;
 }
-
-/* #result-button {
-  display: inline;
-  margin-right: 10%;
-  margin-left: 70%;
-} */
-
 
 button:hover {
   background-color: #7da2a9;
