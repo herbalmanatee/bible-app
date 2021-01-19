@@ -21,7 +21,6 @@ class MainForms extends React.Component {
   onFormChange (event) {
     let name = event.target.name;
     let value = event.target.value;
-    console.log(value);
     this.setState({
       [name] : value
     })
@@ -91,7 +90,7 @@ class MainForms extends React.Component {
             className="form-item form3"
             id="search">
             <label>Search By</label><br></br>
-            <select name="queryParam">
+            <select id="query-param" name="queryParam">
               <option value={this.state.version}>Whole Bible</option>
               <option value="ot">Old Testament</option>
               <option value="nt">New Testament</option>

@@ -11,6 +11,7 @@ let SearchResults = (props) => {
     <div id="search-data">
       <h4>{props.data.length} Results</h4>
       {props.data.map((dataObj, i) => {
+        let chapterTitle = dataObj.title.split(':')[0]
         let chapter = dataObj.title.split(':')[0].split(' ');
         let chapterName = chapter.slice(0, chapter.length -1)
         let chapterQuery = {
@@ -19,8 +20,8 @@ let SearchResults = (props) => {
         }
         return (
           <div key={i} className="search-result">
-            <h4>{dataObj.title}</h4>
-            <button onClick={()=>{props.onChapterSelect(chapterQuery, true)}}id="result-button">Go to {chapter} </button>
+            {/* <h4>{dataObj.title}</h4> */}
+            <button onClick={()=>{props.onChapterSelect(chapterQuery, true)}}id="result-button"><h4>{dataObj.title}</h4></button>
             <p>{dataObj.preview}</p>
           </div>
         )

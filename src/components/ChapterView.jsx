@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {buttonNextSvg, buttonPrevSvg} from './buttonSvg.jsx';
+import InitialChapterHTML from './InitialChapterHTML.jsx';
 
 let ChapterView = (props) => {
   let bookLength = props.bookLength;
@@ -9,6 +10,15 @@ let ChapterView = (props) => {
   //conditional rendering for entire component
   if (!props.show) {
     return null
+  }
+  if (props.text === '') {
+    return (
+      <div id="text">
+      {navElement}
+      <div dangerouslySetInnerHTML={{__html: InitialChapterHTML}}></div>
+      {navElement}
+    </div>
+    );
   }
   //conditional rendering for navigation buttons Prev/Next chapter
   if (chapterNum === 1) {

@@ -6,6 +6,7 @@ import SearchResults from './SearchResults.jsx';
 import {getBiblesList, getSearchResults, getChapterInfo} from '../serverReqs';
 import {spaceSvg, lightSvg} from './buttonSvg.jsx';
 
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -20,7 +21,7 @@ class App extends React.Component {
       chapterHTML: '',
       searchResults: [],
       showChapters: false,
-      showChapText: false,
+      showChapText: true,
       showSearchResults: false,
       theme: true
     }
@@ -65,7 +66,7 @@ class App extends React.Component {
       chapters: chapters,
       version: version,
       book: book,
-      showChapters: true
+      showChapters: !this.state.showChapters
     })
   }
 
@@ -84,13 +85,19 @@ class App extends React.Component {
           })
         });
     }
-
     //conditional for if invoking from a search result
     let chapNum;
     if (fromSearch) {
+      let chapters = [];
+      for (let bookObj of this.state.books) {
+        if (chap.chapter.includes(bookObj.name)) {
+          chapters = bookObj.chapters.slice(1);
+        }
+      }
       chapNum = chap.chapNum * 1;
       this.setState({
-        book: chap.chapter
+        book: chap.chapter,
+        chapters: chapters
       }, ()=>{request()})
     } else {
       chapNum = chap*1

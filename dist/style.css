@@ -39,6 +39,10 @@ h1 {
   width: 30%
 }
 
+h4 {
+  display: inline;
+}
+
 .header {
   background-color: #24363a ;
   color: #7da2a9;
@@ -81,27 +85,50 @@ h1 {
   margin-left: 25px;
   margin-top: 50px;
 }
-.form1 { grid-area: form1}
+.form1 {
+  grid-area: form1;
+}
 .form2 { grid-area: form2}
 .form3 {
   grid-area: form3;
+  justify-self: end;
+  margin-right: 25px;
 }
 
 
-#search {
+/* #search {
   margin-top: 18px;
   margin-left: 60%;
-}
+} */
 #search-data {
   margin-left: 25px;
+  margin-top: 30px;
 }
 #search-button {
   display: inline
 }
 
 #versions {
-  width: 65%;
+  max-width: 65%;
+  min-width: 65%;
 }
+
+#books {
+  max-width: 25%;
+  min-width: 25%;
+}
+
+#query-param {
+  max-width: 172px;
+  min-width: 172px;
+}
+
+/* #result-button {
+  display: inline;
+  margin-right: 10%;
+  margin-left: 70%;
+} */
+
 
 button:hover {
   background-color: #7da2a9;
